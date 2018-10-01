@@ -15,7 +15,7 @@ class PgButton(object):
 		if rect is None:
 			self._rect = pygame.Rect(0, 0, 30, 60)
 		else:
-			self._rect = pygame.Rect(object)
+			self._rect = pygame.Rect(rect)
 		
 		self._caption = caption
 		self._bgcolor = bgcolor
@@ -80,6 +80,7 @@ class PgButton(object):
 		if self._visible:
 			if self.buttonDown:
 				surfaceObj.blit(self.surfaceDown, self._rect)
+				print "Successfully blitted down button"
 			elif self.mouseOverButton:
 				surfaceObj.blit(self.surfaceHighlight, self._rect)
 			else:
@@ -171,7 +172,7 @@ class PgButton(object):
 			hasExited = True #Call mouseExit() later, since we want mouseMove() to be handled before mouseExit()
 			
 		
-		if self._rect.colllidepoint(eventObj.pos):
+		if self._rect.collidepoint(eventObj.pos):
 			#If mouse event happened over the button:
 			if eventObj.type == MOUSEMOTION:
 				self.mouseMove(eventObj)
@@ -179,7 +180,7 @@ class PgButton(object):
 				
 			elif eventObj.type == MOUSEBUTTONDOWN:
 				self.buttonDown = True
-				self.lastMouseDownButton = True
+				self.lastMouseDownOverButton = True
 				self.mouseDown(eventObj)
 				retVal.append('down')
 		
@@ -205,6 +206,7 @@ class PgButton(object):
 				self.buttonDown = False
 				self.mouseClick(eventObj)
 				retVal.append('click')
+				
 				
 		if hasExited:
 			self.mouseExit(eventObj)
@@ -251,5 +253,23 @@ class PgButton(object):
 		return self._bgcolor
 		
 	def _propSetBgColor(self, setting):
-		self._customSurfaces
+		self._customSurfaces = False
+		self._bgcolor = setting
+		self._update()
 		
+	#Font attributes
+	def _propGetFont(self):
+		return self._font
+		
+	def _propSetFont(self, setting):
+		self.customSurfaces = False
+		self._font = setting
+		self._update()
+		
+	caption = property(_propGetCaption, _propSetCaption)
+	rect = property(_propGetRect, _propSetRect)
+	visible = property(_propGetVisible, _propSetVisible)
+	fgcolor = property(_propGetFgColor, _propSetFgColor)
+	bgcolor = property(_propGetBgColor, _propSetBgColor)
+	font = property(_propGetFont, _propSetFont)
+	font = property(_propGetFont, _propSetFont)
