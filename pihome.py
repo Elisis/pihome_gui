@@ -6,6 +6,8 @@ import sys
 import pgbutton
 import datetime
 
+macro switch()
+
 pygame.init()
 pygame.font.init()
 
@@ -85,7 +87,7 @@ def setup_weather():
 			if event.type == QUIT:
 				cleanup()
 			
-			#if 
+			if
 				
 		pygame.Surface.fill(DISPLAYSURF, DARKGREY)
 		pygame.display.update()

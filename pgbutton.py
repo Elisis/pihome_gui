@@ -80,7 +80,6 @@ class PgButton(object):
 		if self._visible:
 			if self.buttonDown:
 				surfaceObj.blit(self.surfaceDown, self._rect)
-				print "Successfully blitted down button"
 			elif self.mouseOverButton:
 				surfaceObj.blit(self.surfaceHighlight, self._rect)
 			else:
