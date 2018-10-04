@@ -5,11 +5,13 @@ import time
 import sys
 import pgbutton
 import datetime
-
-macro switch()
+import GIFImage
+import os
+import ptext
 
 pygame.init()
 pygame.font.init()
+pygame.mouse.set_visible(0)
 
 date = time.strftime("%d")
 
@@ -19,6 +21,7 @@ HEIGHT = 480
 GREY = pygame.Color(68, 68, 68)
 LIGHTGREY = pygame.Color(169, 169, 169)
 DARKGREY = pygame.Color(255, 255, 255)
+
 
 bodyfont = pygame.font.Font("/usr/share/fonts/truetype/freefont/FreeSans.ttf", 14)
 
@@ -47,49 +50,64 @@ def cleanup():
 def main_menu():
 	
 	global DISPLAYSURF
-	DISPLAYSURF = pygame.display.set_mode((WIDTH, HEIGHT), pygame.HWSURFACE | pygame.DOUBLEBUF)
+	DISPLAYSURF = pygame.display.set_mode((WIDTH, HEIGHT), pygame.NOFRAME | pygame.DOUBLEBUF)
 	
-	timeButtonObj = pgbutton.PgButton((50, 50, 120, 60), "Time and Date")
-	weatherButtonObj = pgbutton.PgButton((630, 50, 120, 60), "Weather")
+
+	quitButtonObj = pgbutton.PgButton((620, 0, 60, 30), "X")	
+	timeButtonObj = pgbutton.PgButton((80, 60, 120, 60), "Time and Date")
+	weatherButtonObj = pgbutton.PgButton((600, 60, 120, 60), "Weather")
 	
 	exitButtonObj = pgbutton.PgButton((740, 50, 40, 20))
 	
 	while True:
 		for event in pygame.event.get():
-			if event.type == pygame.QUIT:
-				cleanup()
 			
 			if 'click' in timeButtonObj.handleEvent(event):
 				setup_time()
 			
 			if 'click' in weatherButtonObj.handleEvent(event):
 				setup_weather()
+			
+			if 'click' in quitButtonObj.handleEvent(event):
+				os.system("echo nutscatsdogs3187 | sudo -S shutdown now")
+			
 				
 		pygame.Surface.fill(DISPLAYSURF, GREY)
+		exitButtonObj.draw(DISPLAYSURF)
 		timeButtonObj.draw(DISPLAYSURF)
 		weatherButtonObj.draw(DISPLAYSURF)
 		pygame.display.update()	
 	 	
 def setup_time():
+	
+	returnButtonObj = pgbutton.PgButton((600, 60, 60, 30), "Return")
+	
 	while True:
 		for event in pygame.event.get():
-			if event.type == QUIT:
-				cleanup()
+			
+			if 'click' in returnButtonObj.handleEvent(event):
+				main_menu() 
 		pygame.Surface.fill(DISPLAYSURF, GREY)
+		returnButtonObj.draw(DISPLAYSURF)
 		#currentTime = datetime.strptime("%A, %d %B, %H:%M:%S")
 		currentTime = time.strftime("%A, %d" + dateSuffix() + " %B, %H:%M:%S")
-		print currentTime
+		ptext.draw("Current Time: " + currentTime + ".", (20, 100), fontsize = 50)	
 		pygame.display.update()
 
 def setup_weather():
 	while True:
+		
+		os.system("wget -N -o /dev/null ftp://ftp.bom.gov.au/anon/gen/radar/IDR014.gif")
+		radar = GIFImage.GIFImage("IDR014.gif")
+
 		for event in pygame.event.get():
 			if event.type == QUIT:
 				cleanup()
 			
-			if
+			#if
 				
-		pygame.Surface.fill(DISPLAYSURF, DARKGREY)
+		pygame.Surface.fill(DISPLAYSURF, GREY)
+		radar.render(DISPLAYSURF, (140, -10))
 		pygame.display.update()
 		
 
