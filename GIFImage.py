@@ -1,5 +1,3 @@
-"""GIFImage by Matthew Roe"""
-
 from PIL import Image
 import pygame
 from pygame.locals import *
